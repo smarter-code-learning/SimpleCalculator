@@ -1,32 +1,32 @@
 name: .NET Console Application	
-	on:
-	  push:
-	    branches: [ "master" ]
-	  pull_request:
-	    branches: [ "master" ]
-	jobs:
-	  build:
-	    strategy:
-	      matrix:
-	        configuration: [Debug, Release]
-	    runs-on: windows-latest  
-	    env:
-	      Solution_Name: SimpleCalculator.sln
-	      Test_Project_Path: SimpleCalculator.Tests\SimpleCalculator.Tests.csproj	
-	    steps:
-	    - name: Checkout
-	      uses: actions/checkout@v3
-	      with:
-	        fetch-depth: 0
-	    - name: Install .NET 
-	      uses: actions/setup-dotnet@v3
-	      with:
-	        dotnet-version: 6.0.x
-	    - name: Setup MSBuild.exe
-	      uses: microsoft/setup-msbuild@v1.0.2
-	    - name: Execute unit tests
-	      run: dotnet test
-	    - name: Restore the application
-	      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-	      env:
-	        Configuration: ${{ matrix.configuration }}
+  on:
+    push:
+      branches: [ "master" ]
+    pull_request:
+      branches: [ "master" ]
+  jobs:
+    build:
+      strategy:
+        matrix:
+          configuration: [Debug, Release]
+      runs-on: windows-latest  
+      env:
+        Solution_Name: SimpleCalculator.sln
+        Test_Project_Path: SimpleCalculator.Tests\SimpleCalculator.Tests.csproj	
+      steps:
+      - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+      - name: Install .NET 
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+      - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Execute unit tests
+      run: dotnet test
+      - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
